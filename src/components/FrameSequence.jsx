@@ -126,11 +126,12 @@ export function FrameSequence({ frames }) {
       trigger: section,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.55,
+      scrub: 0.9,
       onUpdate: (self) => {
         const eased = gsap.parseEase('power2.inOut')(self.progress);
         targetIndex.current = eased * (frames.length - 1);
-        velocity.current = self.getVelocity();
+        const nextVelocity = self.getVelocity();
+        velocity.current = velocity.current * 0.6 + nextVelocity * 0.4;
         cache.preloadWindow(targetIndex.current, quality === 'low' ? 10 : 24);
       },
     });
@@ -177,7 +178,7 @@ export function FrameSequence({ frames }) {
     });
 
     const render = () => {
-      const stiffness = quality === 'low' ? 0.16 : 0.115;
+      const stiffness = quality === 'low' ? 0.16 : 0.06;
       currentIndex.current += (targetIndex.current - currentIndex.current) * stiffness;
       const nextIndex = Math.max(0, Math.min(frames.length - 1, currentIndex.current));
       const lower = Math.floor(nextIndex);
@@ -188,10 +189,10 @@ export function FrameSequence({ frames }) {
 
       if (lowerFrame.ready) {
         const motionDelta = Math.abs(nextIndex - lastIndex.current);
-        const speedGlow = Math.min(1, Math.abs(velocity.current) / 2600 + motionDelta * 0.12);
+        const speedGlow = Math.min(1, Math.abs(velocity.current) / 3600 + motionDelta * 0.08);
         const direction = velocity.current >= 0 ? 1 : -1;
-        const zoom = quality === 'low' ? 1 : 1 + speedGlow * 0.026;
-        const slip = quality === 'low' ? 0 : speedGlow * direction * 11;
+        const zoom = quality === 'low' ? 1 : 1 + speedGlow * 0.02;
+        const slip = quality === 'low' ? 0 : speedGlow * direction * 9;
 
         ctx.fillStyle = '#050505';
         ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
@@ -209,9 +210,9 @@ export function FrameSequence({ frames }) {
           ctx.globalCompositeOperation = 'source-over';
         }
 
-        ctx.fillStyle = `rgba(255, 34, 56, ${0.025 + speedGlow * 0.055})`;
+        ctx.fillStyle = `rgba(255, 34, 56, ${0.02 + speedGlow * 0.045})`;
         ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        ctx.fillStyle = `rgba(255, 255, 255, ${speedGlow * 0.018})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${speedGlow * 0.016})`;
         ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
         lastIndex.current = nextIndex;
       }
