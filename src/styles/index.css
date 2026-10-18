@@ -5,12 +5,30 @@
 @tailwind utilities;
 
 :root {
-  color: #f7f2ee;
-  background: #050505;
+  --color-text: #f7f2ee;
+  --color-bg: #050505;
+  --accent-1: #ff5364;
+  --accent-2: #ff2f45;
+  --muted: rgba(255, 255, 255, 0.54);
+  --glass-bg: rgba(10, 10, 11, 0.46);
+  --grain-opacity: 0.12;
+  --dpr-max: 1.75;
+  color: var(--color-text);
+  background: var(--color-bg);
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+[data-theme='light'] {
+  --color-text: #0b0b0c;
+  --color-bg: #f7f2ee;
+  --accent-1: #c62831;
+  --accent-2: #ff6b6b;
+  --muted: rgba(0, 0, 0, 0.54);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --grain-opacity: 0.06;
 }
 
 * {
@@ -19,7 +37,7 @@
 
 html {
   scroll-behavior: auto;
-  background: #050505;
+  background: var(--color-bg);
 }
 
 body {
@@ -28,7 +46,8 @@ body {
   overflow-x: hidden;
   background:
     radial-gradient(circle at 52% 18%, rgba(255, 47, 69, 0.16), transparent 30rem),
-    linear-gradient(180deg, #050505 0%, #0b0b0c 50%, #050505 100%);
+    linear-gradient(180deg, var(--color-bg) 0%, #0b0b0c 50%, var(--color-bg) 100%);
+  color: var(--color-text);
 }
 
 button,
@@ -54,7 +73,7 @@ main {
   inset: 0;
   z-index: 20;
   pointer-events: none;
-  opacity: 0.12;
+  opacity: var(--grain-opacity);
   mix-blend-mode: screen;
   background-image:
     linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
@@ -215,6 +234,27 @@ main {
 .hud-progress div {
   height: 100%;
   background: linear-gradient(90deg, #ff2f45, #fff);
+}
+
+.theme-toggle {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(135deg, rgba(255, 47, 69, 0.9), rgba(255, 255, 255, 0.12));
+  color: #fff;
+  padding: 0.38rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(255, 47, 69, 0.35);
 }
 
 .hero-section {

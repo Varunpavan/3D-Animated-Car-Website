@@ -1,4 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
+import ThemeToggle from './ThemeToggle.jsx';
 
 const links = [
   ['Sequence', '#sequence'],
@@ -27,6 +28,7 @@ export function Hud() {
       <div className="hud-status">
         <span>Launch Film</span>
         <strong>Live</strong>
+        <ThemeToggle />
       </div>
       <div className="hud-progress" aria-hidden="true">
         <motion.div style={{ width }} />
